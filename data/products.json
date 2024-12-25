@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Wireless Mouse",
+    "description": "Ergonomic wireless mouse with adjustable DPI.",
+    "price": 25.99
+  },
+  {
+    "id": 2,
+    "name": "Mechanical Keyboard",
+    "description": "RGB mechanical keyboard with tactile switches.",
+    "price": 79.99
+  },
+  {
+    "id": 3,
+    "name": "Noise-Canceling Headphones",
+    "description": "Bluetooth headphones with active noise cancelation.",
+    "price": 129.99
+  },
+  {
+    "id": 4,
+    "name": "USB-C Hub",
+    "description": "Multi-port USB-C hub with HDMI, USB, and SD card slots.",
+    "price": 49.99
+  },
+  {
+    "id": 5,
+    "name": "Smartphone Stand",
+    "description": "Adjustable aluminum smartphone and tablet stand.",
+    "price": 15.99
+  }
+]
