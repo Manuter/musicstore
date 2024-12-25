@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Manu Music Store - Products</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Similar to previous styles */
+    body { background: #f7f7f7; font-family: 'Arial', sans-serif; }
+    h2 { text-align: center; font-size: 3rem; color: #d22f2f; margin-top: 20px; }
+    button { background-color: #d22f2f; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+    button:hover { background-color: #a52727; }
+    #logoutButton { margin-top: 20px; display: block; text-align: center; }
+    ul#productList { list-style-type: none; padding: 0; margin-top: 20px; }
+    li { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 15px; margin: 10px 0; }
+    label { font-size: 1.1rem; }
+    input[type="number"] { padding: 8px; font-size: 1.1rem; width: 100px; }
+    input[type="checkbox"] { margin-right: 10px; }
+  </style>
+</head>
+<body>
+  <div id="store-title">The Manu Music Store</div>
+
+  <h2>Products</h2>
+  <form id="checkoutForm">
+    <ul id="productList"></ul>
+    <label for="totalAmount">Total Amount (EUR):</label>
+    <input type="number" id="totalAmount" name="amount" step="0.01" readonly>
+    <button type="submit">Checkout</button>
+  </form>
+  <button id="logoutButton">Logout</button>
+
+  <script>
+    // Cart for storing selected products
+    let cart = [];
+
+    // Fetch and display products
+    async function loadProducts() {
+      const response = await fetch('/api/products');
+      const products = await response.json();
+
+      const productList = document.getElementById('productList');
+      productList.innerHTML = ''; // Clear any existing content
+      let total = 0;
+
+      products.forEach(product => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <input type="checkbox" name="products" value="${product.id}" data-price="${product.price}" id="product-${product.id}">
+          <label for="product-${product.id}">
+            <strong>${product.name}</strong><br>
+            ${product.description}<br>
+            <em>Price: €${product.price.toFixed(2)}</em>
+          </label>
+        `;
+        productList.appendChild(li);
+      });
+
+      // Attach event listeners to update total amount dynamically
+      document.querySelectorAll('input[name="products"]').forEach(checkbox => {
+        checkbox.addEventListener('change', updateCart);
+      });
+    }
+
+    // Update cart and total amount
+    function updateCart() {
+      const selectedProducts = Array.from(document.querySelectorAll('input[name="products"]:checked'));
+      cart = selectedProducts.map(checkbox => ({
+        id: checkbox.value,
+        price: parseFloat(checkbox.dataset.price)
+      }));
+
+      const totalAmount = cart.reduce((sum, product) => sum + product.price, 0);
+      document.getElementById('totalAmount').value = totalAmount.toFixed(2);
+    }
+
+    // Handle checkout
+    document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (cart.length === 0) {
+        alert('Please select at least one product to checkout.');
+        return;
+      }
+
+      const totalAmount = parseFloat(document.getElementById('totalAmount').value);
+
+      if (totalAmount <= 0) {
+        alert('Total amount must be greater than zero.');
+        return;
+      }
+
+      // Send cart and total amount to backend
+      const response = await fetch('/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cart: cart,
+          totalAmount: totalAmount
+        })
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        window.location.href = result.paymentUrl; // Redirect to payment page
+      } else {
+        alert(result.message);
+      }
+    });
+
+    // Handle logout
+    document.getElementById('logoutButton').addEventListener('click', () => {
+      window.location.href = '/logout';
+    });
+
+    // Load products on page load
+    loadProducts();
+  </script>
+</body>
+</html>
