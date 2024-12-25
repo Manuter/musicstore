@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@mollie/api-client": "^4.1.0",
+    "axios": "^1.7.9",
+    "mollie-api-node": "^1.4.0",
+    "morgan": "^1.10.0",
+    "stripe": "^17.4.0"
+  }
+}
