@@ -104,8 +104,8 @@
 
   <script>
     // Initialize Supabase
-    const supabaseUrl = "https://your-project.supabase.co"; // Replace with your Supabase URL
-    const supabaseKey = "your-anon-key"; // Replace with your Supabase anon key
+    const supabaseUrl = "https://lbnatkrmeoxldqzudmfb.supabase.co"; // Replace with your Supabase URL
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxibmF0a3JtZW94bGRxenVkbWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUyMjEzNTUsImV4cCI6MjA1MDc5NzM1NX0.rSNuOimmTv_BnrROF3xp-3xAM7Lr8EDAidgrw1Hkx4s"; // Replace with your Supabase anon key
     const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
     // Handle login form submission
@@ -126,7 +126,7 @@
         } else if (data) {
           alert('Login successful!');
           localStorage.setItem('accessToken', data.session.access_token); // Store access token in localStorage
-          window.location.href = '/dashboard'; // Redirect to the dashboard page (adjust URL as needed)
+          window.location.href = '/public/products'; // Redirect to the dashboard page (adjust URL as needed)
         }
       } catch (err) {
         console.error(err);
