@@ -110,7 +110,7 @@
   <script>
     // Initialize Supabase
     const supabaseUrl = "https://lbnatkrmeoxldqzudmfb.supabase.co"; // Replace with your Supabase URL
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxibmF0a3JtZW94bGRxenVkbWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUyMjEzNTUsImV4cCI6MjA1MDc5NzM1NX0.rSNuOimmTv_BnrROF3xp-3xAM7Lr8EDAidgrw1Hkx4s"; // Replace with your Supabase anon key
+    const supabaseKey = "your-supabase-key"; // Replace with your Supabase anon key
     const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
     // Handle register form submission
@@ -121,17 +121,20 @@
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
 
+      // Check if the passwords match
       if (password !== confirmPassword) {
         alert('Passwords do not match!');
         return;
       }
 
       try {
+        // Register with Supabase
         const { user, error } = await supabase.auth.signUp({
           email: email,
           password: password
         });
 
+        // Handle errors or successful registration
         if (error) {
           alert('Error: ' + error.message);
         } else if (user) {
@@ -139,7 +142,7 @@
           window.location.href = '/login'; // Redirect to login page
         }
       } catch (err) {
-        console.error(err);
+        console.error('Unexpected error:', err);
         alert('An unexpected error occurred.');
       }
     });
