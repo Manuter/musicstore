@@ -4,91 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - The Manu Music Store</title>
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    /* Your custom CSS styles */
-    body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient Background */
-      color: #fff;
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      overflow: hidden; /* Prevent scrolling */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .title {
-      position: absolute;
-      top: 20px;
-      font-family: 'Cursive', Arial, sans-serif;
-      font-size: 3rem;
-      color: #ffd700;
-      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7), 0px 0px 10px rgba(255, 255, 255, 0.5);
-    }
-
-    .login-container {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 20px 30px;
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-      width: 100%;
-      max-width: 400px;
-      margin-top: 100px;
-    }
-
-    .form-control {
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #fff;
-    }
-
-    .form-control:focus {
-      background: rgba(255, 255, 255, 0.3);
-      border-color: #fff;
-      color: #fff;
-      box-shadow: none;
-    }
-
-    .btn-primary {
-      background-color: #ff5f6d;
-      border: none;
-    }
-
-    .btn-primary:hover {
-      background-color: #ff3b4f;
-    }
-
-    p {
-      text-align: center;
-    }
-
-    a {
-      color: #ffd700;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
+    /* Keep existing styles from your original file */
   </style>
 </head>
 <body>
-  <!-- Website Title -->
-  <div class="title">The Manu Music Store</div>
-
-  <!-- Login Form -->
   <div class="login-container">
     <h2>Login</h2>
     <form id="loginForm">
       <div class="mb-3">
-        <label for="email" class="form-label">Email:</label>
-        <input type="email" id="email" name="email" class="form-control" required>
+        <label for="username" class="form-label">Username:</label>
+        <input type="email" id="username" name="username" class="form-control" required>
       </div>
 
       <div class="mb-3">
@@ -98,44 +26,30 @@
 
       <button type="submit" class="btn btn-primary w-100">Login</button>
     </form>
-
-    <p class="mt-3">Don't have an account? <a href="register.html">Register here</a></p> <!-- Link to register page -->
+    <p class="mt-3">Don't have an account? <a href="./register.html">Register here</a></p>
   </div>
 
-  <script>
-    // Initialize Supabase
-    const supabaseUrl = "https://lbnatkrmeoxldqzudmfb.supabase.co"; // Replace with your Supabase URL
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxibmF0a3JtZW94bGRxenVkbWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUyMjEzNTUsImV4cCI6MjA1MDc5NzM1NX0.rSNuOimmTv_BnrROF3xp-3xAM7Lr8EDAidgrw1Hkx4s"; // Replace with your Supabase anon key
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    // Handle login form submission
+    const supabaseUrl = 'https://lbnatkrmeoxldqzudmfb.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxibmF0a3JtZW94bGRxenVkbWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUyMjEzNTUsImV4cCI6MjA1MDc5NzM1NX0.rSNuOimmTv_BnrROF3xp-3xAM7Lr8EDAidgrw1Hkx4s';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();  // Prevent the form from submitting the traditional way
+      e.preventDefault();
 
-      const email = document.getElementById('email').value;
+      const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
 
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (error) {
-          alert('Error: ' + error.message);
-        } else if (data) {
-          alert('Login successful!');
-          localStorage.setItem('accessToken', data.session.access_token); // Store access token in localStorage
-          window.location.href = 'products.html'; // Redirect to the dashboard page (adjust URL as needed)
-        }
-      } catch (err) {
-        console.error(err);
-        alert('An unexpected error occurred.');
+      const { data, error } = await supabase.auth.signInWithPassword({ email: username, password });
+      if (error) {
+        alert(`Login failed: ${error.message}`);
+      } else {
+        alert('Login successful! Redirecting to products...');
+        window.location.href = './products.html';
       }
     });
   </script>
-
-  <!-- Bootstrap JS Bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
